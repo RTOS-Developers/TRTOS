@@ -1,0 +1,5 @@
+-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\Libraries\CMSIS\CM3\CoreSupport -I..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\startup\arm -I..\Libraries\STM32F10x_StdPeriph_Driver\inc -I..\Libraries\STM32F10x_StdPeriph_Driver\src -I..\USER -I..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I..\Driver -I..\Configs -I..\Boot -I..\Tos -I..\Tools -I..\FS\TQFS -I..\USER\Prj_4.3LCD -I..\USER\Prj_CanBus -I..\USER\Prj_Sensor -I..\GUI\MGui -I..\FuncTask -I..\USER\Prj_Really -I..\USER\Prj_PdaTran -I..\USB\WHID -I..\FS -I..\GUI\TGui -I..\GUI -I..\GUI\MGui
+-I "H:\Program Files (x64)\Keil4.72a\ARM\RV31\INC"
+-I "H:\Program Files (x64)\Keil4.72a\ARM\CMSIS\Include"
+-I "H:\Program Files (x64)\Keil4.72a\ARM\Inc\ST\STM32F10x"
+-DTOS_BOOTLOADER -o ..\user\prj_boot\obj\stm32f10x_usart.o --omf_browse ..\user\prj_boot\obj\stm32f10x_usart.crf --depend ..\user\prj_boot\obj\stm32f10x_usart.d --feedback "..\USER\Prj_Boot\Obj\Project.fed" "..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.c"

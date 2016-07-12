@@ -1,0 +1,155 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000                 INCLUDE          tos_core_a.h
+    1 00000000         
+    2 00000000         
+    3 00000000         ;*********************************** ±äÁ¿ÉùÃ÷ **********
+                       ****************************
+    4 00000000                 EXTERN           gpuiCurTaskSpAddr
+    5 00000000                 EXTERN           guiNextTaskSp
+    6 00000000         
+    7 00000000         
+    8 00000000         ;*********************************** º¯ÊýÉùÃ÷ **********
+                       ****************************
+    9 00000000                 EXPORT           TOS_ContextSwitch
+   10 00000000                 EXPORT           TOS_SwitchToTask
+   11 00000000         
+   12 00000000         
+   13 00000000                 END
+    3 00000000         
+    4 00000000         
+    5 00000000         ;¶ÑÕ»8×Ö½Ú¶ÔÆë
+    6 00000000                 PRESERVE8
+    7 00000000         
+    8 00000000                 AREA             TOS_CORE_A, CODE, READONLY
+    9 00000000                 THUMB
+   10 00000000         
+   11 00000000         
+   12 00000000         ;º¯Êý¹¦ÄÜ: ÊµÏÖÈÎÎñÇÐ»»¹¦ÄÜ, ½«¼Ä´æÆ÷±¸·Ýµ½µ±Ç°ÈÎÎñ¶ÑÕ»Ö
+                       Ð, ´Ó½«ÒªÔËÐÐÈÎÎñ¶ÑÕ»ÖÐ
+   13 00000000         ;          È¡³ö¼Ä´æÆ÷±£´æÖµ²¢Ìø×ªµ½½«ÒªÔËÐÐÈÎÎñÖ´ÐÐ.
+   14 00000000         ;Èë¿Ú²ÎÊý: none.
+   15 00000000         ;·µ »Ø Öµ: none.
+   16 00000000         TOS_ContextSwitch
+   17 00000000         
+   18 00000000         ;±£´æµ±Ç°ÈÎÎñµÄ¶ÑÕ»ÐÅÏ¢
+   19 00000000 B082            SUB              R13, #0x8
+   20 00000002 E92D 1FFF       PUSH             {R0 - R12}
+   21 00000006 F3EF 8003       MRS              R0, XPSR
+   22 0000000A B401            PUSH             {R0}
+   23 0000000C 4668            MOV              R0, R13
+   24 0000000E F100 0040       ADD              R0, #0x40
+   25 00000012 E900 4001       STMDB            R0, {R0, R14}
+   26 00000016         
+   27 00000016         ;±£´æµ±Ç°ÈÎÎñµÄÖ¸ÕëÖµ
+   28 00000016 480C            LDR              R0, =gpuiCurTaskSpAddr
+   29 00000018 6801            LDR              R1, [R0]
+   30 0000001A F8C1 D000       STR              R13, [R1]
+   31 0000001E         
+   32 0000001E         ;»ñÈ¡½«ÒªÔËÐÐÈÎÎñµÄÖ¸Õë
+   33 0000001E 480B            LDR              R0, =guiNextTaskSp
+   34 00000020 F8D0 D000       LDR              R13, [R0]
+   35 00000024         
+   36 00000024         ;»ñÈ¡½«ÒªÔËÐÐÈÎÎñµÄ¶ÑÕ»ÐÅÏ¢²¢ÔËÐÐÐÂÈÎÎñ
+   37 00000024 BC01            POP              {R0}
+   38 00000026 F380 8803       MSR              XPSR, R0
+   39 0000002A E8BD 1FFF       POP              {R0 - R12}
+   40 0000002E B001            ADD              R13, #4
+   41 00000030         
+   42 00000030 BD00            POP              {PC}
+   43 00000032         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   44 00000032         ;º¯Êý¹¦ÄÜ: ÊµÏÖ´ÓÎÞ²Ù×÷ÏµÍ³×´Ì¬ÇÐ»»µ½²Ù×÷ÏµÍ³×´Ì¬, ´ÓRoo
+                       tÈÎÎñ¶ÑÕ»ÖÐÈ¡³ö¼Ä´æÆ÷±£
+   45 00000032         ;          ´æÖµ²¢Ìø×ªµ½RootÈÎÎñÖ´ÐÐ.
+   46 00000032         ;Èë¿Ú²ÎÊý: none.
+   47 00000032         ;·µ »Ø Öµ: none.
+   48 00000032         TOS_SwitchToTask
+   49 00000032         
+   50 00000032         ;»ñÈ¡½«ÒªÔËÐÐÈÎÎñµÄÖ¸Õë
+   51 00000032 4806            LDR              R0, =guiNextTaskSp
+   52 00000034 F8D0 D000       LDR              R13, [R0]
+   53 00000038         
+   54 00000038         ;»ñÈ¡½«ÒªÔËÐÐÈÎÎñµÄ¶ÑÕ»ÐÅÏ¢²¢ÔËÐÐÐÂÈÎÎñ
+   55 00000038 BC01            POP              {R0}
+   56 0000003A F380 8803       MSR              XPSR, R0
+   57 0000003E E8BD 1FFF       POP              {R0 - R12}
+   58 00000042 B001            ADD              R13, #4
+   59 00000044 BD00            POP              {PC}
+   60 00000046         
+   61 00000046 00 00           ALIGN
+   62 00000048                 END
+              00000000 
+              00000000 
+Command Line: --debug --liston --xref --cpu=Cortex-M3 --apcs=/interwork --depen
+d=..\user\prj_tankctr\ctrobj\tos_core_a.d -o..\user\prj_tankctr\ctrobj\tos_core
+_a.o -I"H:\Program Files (x64)\Keil4.72a\ARM\ARMCC\include" -I"H:\Program Files
+ (x64)\Keil4.72a\ARM\RV31\INC" -I"H:\Program Files (x64)\Keil4.72a\ARM\CMSIS\In
+clude" -I"H:\Program Files (x64)\Keil4.72a\ARM\Inc\ST\STM32F10x" --predefine="_
+_MICROLIB SETA 1" ..\Tos\tos_core_a.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+TOS_CORE_A 00000000
+
+Symbol: TOS_CORE_A
+   Definitions
+      At line 8 in file ..\Tos\tos_core_a.asm
+   Uses
+      None
+Comment: TOS_CORE_A unused
+TOS_ContextSwitch 00000000
+
+Symbol: TOS_ContextSwitch
+   Definitions
+      At line 16 in file ..\Tos\tos_core_a.asm
+   Uses
+      At line 9 in file ..\Tos\tos_core_a.h
+Comment: TOS_ContextSwitch used once
+TOS_SwitchToTask 00000032
+
+Symbol: TOS_SwitchToTask
+   Definitions
+      At line 48 in file ..\Tos\tos_core_a.asm
+   Uses
+      At line 10 in file ..\Tos\tos_core_a.h
+Comment: TOS_SwitchToTask used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+gpuiCurTaskSpAddr 00000000
+
+Symbol: gpuiCurTaskSpAddr
+   Definitions
+      At line 4 in file ..\Tos\tos_core_a.h
+   Uses
+      At line 28 in file ..\Tos\tos_core_a.asm
+Comment: gpuiCurTaskSpAddr used once
+guiNextTaskSp 00000000
+
+Symbol: guiNextTaskSp
+   Definitions
+      At line 5 in file ..\Tos\tos_core_a.h
+   Uses
+      At line 33 in file ..\Tos\tos_core_a.asm
+      At line 51 in file ..\Tos\tos_core_a.asm
+
+2 symbols
+338 symbols in table
